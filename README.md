@@ -12,7 +12,7 @@
 
 ## Description
 
-Puppet-chaos is a module that will activate chaos engineering with puppet.
+chaosblade is a module that will activate chaos engineering with puppet.
 Chaos engineering can be used to test your environment for stability. Train engineers to solve, detect problems. In short applying chaos engineering to your environment will gain you valuable isights that can be used to improve your environment.
 
 ## Setup

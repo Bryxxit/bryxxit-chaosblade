@@ -30,5 +30,9 @@ EOS
       desc:      'The name of the resource you want to manage.',
       behaviour: :namevar,
     },
+    load: {
+      type:      'Optional[Integer]',
+      desc:      'cpu load percentage in procent',
+    },
   },
 )

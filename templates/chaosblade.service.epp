@@ -1,0 +1,11 @@
+[Unit]
+Description=Chaosblade
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=blade server start -p 9526
+
+[Install]
+WantedBy=multi-user.target
