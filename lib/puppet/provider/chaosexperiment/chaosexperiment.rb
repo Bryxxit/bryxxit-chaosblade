@@ -23,6 +23,11 @@ class Puppet::Provider::Chaosexperiment::Chaosexperiment < Puppet::ResourceApi::
     if value['Command'] == 'cpu'
       type = 'cpu'
     end
+    if value['Command'] == 'disk'
+      if value['SubCommand'] == 'burn'
+        type = 'disk_burn'
+      end
+    end
 
     type
   end
@@ -42,6 +47,7 @@ class Puppet::Provider::Chaosexperiment::Chaosexperiment < Puppet::ResourceApi::
         k.sub! '--uid=', ''
         r[:name] = k
       end
+      ## CPU stuff
       if k.start_with?("--cpu-percent=")
         k.sub! '--cpu-percent=', ''
         r[:load] = k.to_i
@@ -66,6 +72,31 @@ class Puppet::Provider::Chaosexperiment::Chaosexperiment < Puppet::ResourceApi::
         k.sub! '--timeout=', ''
         r[:timeout] = k.to_i
       end
+      ### disk_burn stuff
+      if k.start_with?("--size=")
+        k.sub! '--size=', ''
+        r[:size] = k.to_i
+      end
+      if k.start_with?("--path=")
+        k.sub! '--path=', ''
+        r[:path] = k
+      end
+      if k.start_with?("--read")
+        k.sub! '--read', ''
+        if r[:burn_method] == 'write'
+          r[:burn_method] = 'read_write'
+        else
+          r[:burn_method] = 'read'
+        end
+      end
+      if k.start_with?("--write")
+        k.sub! '--write', ''
+        if r[:burn_method] == 'read'
+          r[:burn_method] = 'read_write'
+        else
+          r[:burn_method] = 'write'
+        end
+      end
 
   
     end
@@ -77,7 +108,42 @@ class Puppet::Provider::Chaosexperiment::Chaosexperiment < Puppet::ResourceApi::
     if should[:type] == 'cpu'
       cpuAttack(context, name, should)
     end
+    if should[:type] == 'disk_burn'
+      diskBurnAttack(context, name, should)
+    end
 
+  end
+
+
+  def diskBurnAttack(context, name, should)
+    command = "blade create disk burn "
+    if should[:size]
+      # percent shoudl be betweeen 0/100
+      command += " --size " + should[:size].to_s
+    end
+    if should[:path]
+      # percent shoudl be betweeen 0/100
+      command += " --path " + should[:path]
+    end
+    if should[:burn_method]
+      if should[:burn_method] == 'read'
+        command += " --read "
+      elsif should[:burn_method] == 'write'
+        command += " --write "
+      elsif should[:burn_method] == 'read_write'
+        command += " --read --write"
+      else
+        command += " --read "
+      end
+    end
+    if should[:cpu_count]
+      command += " --cpu-count " + should[:cpu_count].to_s
+    end
+    if should[:cpu_list]
+      command += " --cpu-list " + should[:cpu_list]
+    end
+    command = sharedSections(context, name, should, command)
+    launchAttack(context, name, command)
   end
 
   def cpuAttack(context, name, should)
@@ -118,8 +184,7 @@ class Puppet::Provider::Chaosexperiment::Chaosexperiment < Puppet::ResourceApi::
     # TODO check stuff
     # if should[:ensure] == 'absent'
     # end
-    # delete(context, name)
-
+    delete(context, name)
     parseAttack(context, name, should)
   end
 

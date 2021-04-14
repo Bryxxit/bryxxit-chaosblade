@@ -35,6 +35,11 @@ EOS
       desc:    'The type of attack you would like to trigger.',
       default: 'cpu',
     },
+    timeout: {
+      type:      'Optional[Integer]',
+      desc:      'The duration of the attack',
+    },
+    ### Cpu params
     load: {
       type:      'Optional[Integer]',
       desc:      'cpu load percentage in procent',
@@ -45,21 +50,25 @@ EOS
     },
     cpu_count: {
       type:      'Optional[Integer]',
-      desc:      'The number of cpu\'s to use in the attack',
+      desc:      'The number of cpus to use in the attack',
     },
     cpu_list: {
-      type:      'Optional[string]',
+      type:      'Optional[String]',
       desc:      'CPUs in which to allow burning (0-3 or 1,3)',
     },
-    timeout: {
+    ### Disk burn metrics
+    size: {
       type:      'Optional[Integer]',
-      desc:      'The duration of the attack',
+      desc:      'Block size in MB the default is 10',
     },
-    # recreate: {
-    #   type:      'Boolean',
-    #   desc:      'Whether to recreate the attack if status is destroyed',
-    #   default:   true,
-    # },
-
+    path: {
+      type:      'Optional[String]',
+      desc:      'The path of directory where the disk is burning, default value is /',
+    },
+    burn_method: {
+      type:    'Enum[read, write, read_write]',
+      desc:    'Burn io by reading a file, writing a file or doing both. Burn io by read, it will create a 600M for reading and delete it when destroy it,  Burn io by write, it will create a file by value of the size flag, for example the size default value is 10, then it will create a 10M*100=1000M file for writing, and delete it when destroy',
+      default: 'read',
+    },
   },
 )
