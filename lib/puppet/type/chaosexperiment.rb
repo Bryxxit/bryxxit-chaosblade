@@ -27,12 +27,39 @@ EOS
     },
     name: {
       type:      'String',
-      desc:      'The name of the resource you want to manage.',
+      desc:      'The uid for the attack',
       behaviour: :namevar,
+    },
+    type: {
+      type:    'Enum[cpu, disk_burn, disk_fill, mem, file]',
+      desc:    'The type of attack you would like to trigger.',
+      default: 'cpu',
     },
     load: {
       type:      'Optional[Integer]',
       desc:      'cpu load percentage in procent',
     },
+    climb: {
+      type:      'Optional[Integer]',
+      desc:      'The climb time in seconds for the attack',
+    },
+    cpu_count: {
+      type:      'Optional[Integer]',
+      desc:      'The number of cpu\'s to use in the attack',
+    },
+    cpu_list: {
+      type:      'Optional[string]',
+      desc:      'CPUs in which to allow burning (0-3 or 1,3)',
+    },
+    timeout: {
+      type:      'Optional[Integer]',
+      desc:      'The duration of the attack',
+    },
+    # recreate: {
+    #   type:      'Boolean',
+    #   desc:      'Whether to recreate the attack if status is destroyed',
+    #   default:   true,
+    # },
+
   },
 )
