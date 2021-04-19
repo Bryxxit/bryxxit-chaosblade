@@ -27,6 +27,9 @@ class Puppet::Provider::Chaosexperiment::Chaosexperiment < Puppet::ResourceApi::
       if value['SubCommand'] == 'burn'
         type = 'disk_burn'
       end
+      if value['SubCommand'] == 'fill'
+        type = 'disk_fill'
+      end
     end
 
     type
@@ -77,6 +80,17 @@ class Puppet::Provider::Chaosexperiment::Chaosexperiment < Puppet::ResourceApi::
         k.sub! '--size=', ''
         r[:size] = k.to_i
       end
+      if k.start_with?("--percent=")
+        k.sub! '--percent=', ''
+        r[:disk_usage] = k.to_i
+      end
+      if k.start_with?("--reserve=")
+        k.sub! '--reserve=', ''
+        r[:disk_reserve] = k.to_i
+      end
+      if k.start_with?("--retain-handle")
+        r[:retain_file] = true
+      end
       if k.start_with?("--path=")
         k.sub! '--path=', ''
         r[:path] = k
@@ -111,12 +125,13 @@ class Puppet::Provider::Chaosexperiment::Chaosexperiment < Puppet::ResourceApi::
     if should[:type] == 'disk_burn'
       diskBurnAttack(context, name, should)
     end
+    if should[:type] == 'disk_fill'
+      diskFillAttack(context, name, should)
+    end
 
   end
 
-
-  def diskBurnAttack(context, name, should)
-    command = "blade create disk burn "
+  def diskShared(contect, name, should, command)
     if should[:size]
       # percent shoudl be betweeen 0/100
       command += " --size " + should[:size].to_s
@@ -125,6 +140,29 @@ class Puppet::Provider::Chaosexperiment::Chaosexperiment < Puppet::ResourceApi::
       # percent shoudl be betweeen 0/100
       command += " --path " + should[:path]
     end
+    command
+  end
+
+  def diskFillAttack(context, name, should)
+    command = "blade create disk fill "
+    command = diskShared(context, name, should, command)
+    if should[:disk_usage]
+      ## TODO max 100%
+      command += " --percent " + should[:disk_usage].to_s
+    end
+    if should[:disk_reserve]
+      command += " --reserve " + should[:disk_reserve].to_s
+    end
+    if should[:retain_file]
+      command += " --retain-handle "
+    end
+    command = sharedSections(context, name, should, command)
+    launchAttack(context, name, command)
+  end
+
+  def diskBurnAttack(context, name, should)
+    command = "blade create disk burn "
+    command = diskShared(context, name, should, command)
     if should[:burn_method]
       if should[:burn_method] == 'read'
         command += " --read "
@@ -135,12 +173,6 @@ class Puppet::Provider::Chaosexperiment::Chaosexperiment < Puppet::ResourceApi::
       else
         command += " --read "
       end
-    end
-    if should[:cpu_count]
-      command += " --cpu-count " + should[:cpu_count].to_s
-    end
-    if should[:cpu_list]
-      command += " --cpu-list " + should[:cpu_list]
     end
     command = sharedSections(context, name, should, command)
     launchAttack(context, name, command)

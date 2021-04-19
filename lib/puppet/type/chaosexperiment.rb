@@ -56,19 +56,31 @@ EOS
       type:      'Optional[String]',
       desc:      'CPUs in which to allow burning (0-3 or 1,3)',
     },
-    ### Disk burn metrics
+    ### Disk fill/burn metrics
     size: {
       type:      'Optional[Integer]',
-      desc:      'Block size in MB the default is 10',
+      desc:      'Block size in MB the default, for burn default is 10 for fill this is empty. If size, percent and reserve flags exist, the priority is as follows: percent > reserve > size ',
     },
     path: {
       type:      'Optional[String]',
-      desc:      'The path of directory where the disk is burning, default value is /',
+      desc:      'The path of directory where the disk is burning/filling, default value is /',
     },
     burn_method: {
       type:    'Enum[read, write, read_write]',
       desc:    'Burn io by reading a file, writing a file or doing both. Burn io by read, it will create a 600M for reading and delete it when destroy it,  Burn io by write, it will create a file by value of the size flag, for example the size default value is 10, then it will create a 10M*100=1000M file for writing, and delete it when destroy',
       default: 'read',
+    },
+    disk_usage: {
+      type:      'Optional[Integer]',
+      desc:      'Percent of disk to occupy in a disk fill experiment. If size, percent and reserve flags exist, the priority is as follows: percent > reserve > size',
+    },
+    disk_reserve: {
+      type:      'Optional[Integer]',
+      desc:      'Number of mb reserve for the disk when doing a disk fill experiment. If size, percent and reserve flags exist, the priority is as follows: percent > reserve > size',
+    },
+    retain_file: {
+      type:      'Optional[Boolean]',
+      desc:      'Wheter to keep the large file created by fill or not.',
     },
   },
 )
