@@ -31,6 +31,14 @@ class Puppet::Provider::Chaosexperiment::Chaosexperiment < Puppet::ResourceApi::
         type = 'disk_fill'
       end
     end
+    if value['Command'] == 'file'
+      if value['SubCommand'] == 'add'
+        type = 'file_add'
+      end
+      if value['SubCommand'] == 'fill'
+        type = 'disk_fill'
+      end
+    end
 
     type
   end
@@ -94,6 +102,24 @@ class Puppet::Provider::Chaosexperiment::Chaosexperiment < Puppet::ResourceApi::
       if k.start_with?("--path=")
         k.sub! '--path=', ''
         r[:path] = k
+        
+      end
+      if k.start_with?("--filepath=")
+        k.sub! '--filepath=', ''
+        r[:path] = k
+      end
+      if k.start_with?("--content=")
+        k.sub! '--content=', ''
+        r[:content] = k
+      end
+      if k.start_with?("--auto-create-dir")
+        r[:create_dir] = true
+      end
+      if k.start_with?("--directory")
+        r[:directory] = true
+      end
+      if k.start_with?("--enable-base64")
+        r[:enable_base64] = true
       end
       if k.start_with?("--read")
         k.sub! '--read', ''
@@ -127,6 +153,9 @@ class Puppet::Provider::Chaosexperiment::Chaosexperiment < Puppet::ResourceApi::
     end
     if should[:type] == 'disk_fill'
       diskFillAttack(context, name, should)
+    end
+    if should[:type] == 'file_add'
+      fileAddAttack(context, name, should)
     end
 
   end
@@ -173,6 +202,34 @@ class Puppet::Provider::Chaosexperiment::Chaosexperiment < Puppet::ResourceApi::
       else
         command += " --read "
       end
+    end
+    command = sharedSections(context, name, should, command)
+    launchAttack(context, name, command)
+  end
+
+
+  def fileShared(contect, name, should, command)
+    if should[:path]
+      # percent shoudl be betweeen 0/100
+      command += " --filepath " + should[:path]
+    end
+    command
+  end
+
+  def fileAddAttack(context, name, should)
+    command = "blade create file add "
+    command = fileShared(context, name, should, command)
+    if should[:content]
+      command += " --content=\"" + should[:content] + "\""
+    end
+    if should[:create_dir]
+      command += " --auto-create-dir "
+    end
+    if should[:enable_base64]
+      command += " --enable-base64 "
+    end
+    if should[:directory]
+      command += " --directory "
     end
     command = sharedSections(context, name, should, command)
     launchAttack(context, name, command)
