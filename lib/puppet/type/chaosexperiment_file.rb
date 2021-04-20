@@ -55,11 +55,19 @@ EOS
       type:      'Optional[String]',
       desc:      'Content to fill the file with',
     },
+    mark: {
+      type:      'Optional[String]',
+      desc:      '--mark 777 (required for chmod)',
+    },
     create_dir: {
       type:      'Optional[Boolean]',
       desc:      'Creates directory if it does not exist',
     },
     enable_base64: {
+      type:      'Optional[Boolean]',
+      desc:      'Use base64 encoding',
+    },
+    force: {
       type:      'Optional[Boolean]',
       desc:      'Use base64 encoding',
     },
@@ -70,6 +78,10 @@ EOS
     escape: {
       type:      'Optional[String]',
       desc:      'symbols to escape, use --escape, at this --count is invalid',
+    },
+    target: {
+      type:      'Optional[String]',
+      desc:      'target folder (required for file_move)',
     },
   },
 )

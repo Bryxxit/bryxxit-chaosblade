@@ -3,12 +3,8 @@
 
 1. [Description](#description)
 2. [Setup - The basics of getting started with chaos](#setup)
-    * [What chaos affects](#what-chaos-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with chaos](#beginning-with-chaos)
 3. [Usage - Configuration options and additional functionality](#usage)
-4. [Limitations - OS compatibility, etc.](#limitations)
-5. [Development - Guide for contributing to the module](#development)
+
 
 ## Description
 
@@ -30,43 +26,82 @@ The very basic steps needed for a user to get the module up and running. This ca
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your users how to use your module to solve problems, and be sure to include code examples. Include three to five examples of the most important or common tasks a user can accomplish with your module. Show users how to accomplish more complex tasks that involve different types, classes, and functions working in tandem.
+Examples
 
-## Reference
+ Creates a load of 5% on a set of your cpu's
+ chaosexperiment_cpu { 'cpuload1':
+    ensure   => 'present',
+    load     => 5,
+    climb    => 60,
+    timeout  => 60,
+    cpu_list => '1,2'
+  }
 
-This section is deprecated. Instead, add reference information to your code as Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your module. For details on how to add code comments and generate documentation with Strings, see the Puppet Strings [documentation](https://puppet.com/docs/puppet/latest/puppet_strings.html) and [style guide](https://puppet.com/docs/puppet/latest/puppet_strings_style.html)
+  Create a file for reading an writing io. Block size is 15MB
+  chaosexperiment_disk { 'diskburn1':
+    type        => 'disk_burn',
+    size        => 15,
+    burn_method => 'read_write',
+    timeout     => 60,
+  }
 
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the root of your module directory and list out each of your module's classes, defined types, facts, functions, Puppet tasks, task plans, and resource types and providers, along with the parameters for each.
+  Creates a file of 2048MB in /
+  chaosexperiment_disk { 'diskfil1':
+    type        => 'disk_fill',
+    size        => 2048,
+    retain_file => true,
+    timeout     => 60,
+  }
 
-For each element (class, defined type, function, and so on), list:
+  creates a file if not exists
+  chaosexperiment_file { 'fileadd1':
+    type       => 'file_add',
+    path       => '/tmp/test/file.txt',
+    content    => 'hello world',
+    create_dir => true,
+    timeout    => 120,
+  }
 
-  * The data type, if applicable.
-  * A description of what the element does.
-  * Valid values, if the data type doesn't make it obvious.
-  * Default value, if any.
+  Creates a directory if not exists
+  chaosexperiment_file { 'fileadd2':
+    type       => 'file_add',
+    path       => '/tmp/test/dir',
+    directory  => true,
+    create_dir => true,
+    timeout    => 120,
+  }
 
-For example:
+  adds the specified content to the file. It is repeated a number of times over certain intervals.
+  chaosexperiment_file { 'fileappend1':
+    type     => 'file_append',
+    path     => '/file0.txt',
+    content  => 'hello world',
+    interval => 3,
+    count    => 10,
+    timeout  => 60,
+  }
 
-```
-### `pet::cat`
+  chmods a file with 777
+  chaosexperiment_file { 'filechmod1':
+    type    => 'file_chmod',
+    mark    => '777',
+    path    => '/file1.txt',
+    timeout => 60,
+  }
 
-#### Parameters
+  Deletes a file
+  chaosexperiment_file { 'filedelete1':
+    type    => 'file_delete',
+    force   => true,
+    path    => '/file2.txt',
+    timeout => 60,
+  }
 
-##### `meow`
-
-Enables vocalization in your cat. Valid options: 'string'.
-
-Default: 'medium-loud'.
-```
-
-## Limitations
-
-In the Limitations section, list any incompatibilities, known issues, or other warnings.
-
-## Development
-
-In the Development section, tell other users the ground rules for contributing to your project and how they should submit their work.
-
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You can also add any additional sections you feel are necessary or important to include here. Please use the `## ` header.
+  move a file to a dir if not exists it creates it
+  chaosexperiment_file { 'filemove1':
+    type       => 'file_move',
+    target     => '/file4.txt',
+    create_dir => true,
+    path       => '/file3.txt',
+    timeout    => 60,
+  }

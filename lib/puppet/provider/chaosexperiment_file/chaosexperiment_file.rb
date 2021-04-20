@@ -15,12 +15,7 @@ class Puppet::Provider::ChaosexperimentFile::ChaosexperimentFile < Puppet::Resou
       # percent shoudl be betweeen 0/100
       command += " --filepath " + should[:path]
     end
-    if should[:content]
-      command += " --content=\"" + should[:content] + "\""
-    end
-    if should[:enable_base64]
-      command += " --enable-base64 "
-    end
+    
     command
   end
 
@@ -30,6 +25,12 @@ class Puppet::Provider::ChaosexperimentFile::ChaosexperimentFile < Puppet::Resou
 
     command = "blade create file add "
     command = fileShared(context, name, should, command)
+    if should[:content]
+      command += " --content=\"" + should[:content] + "\""
+    end
+    if should[:enable_base64]
+      command += " --enable-base64 "
+    end
     if should[:create_dir]
       command += " --auto-create-dir "
     end
@@ -44,6 +45,12 @@ class Puppet::Provider::ChaosexperimentFile::ChaosexperimentFile < Puppet::Resou
 
     command = "blade create file append "
     command = fileShared(context, name, should, command)
+    if should[:content]
+      command += " --content=\"" + should[:content] + "\""
+    end
+    if should[:enable_base64]
+      command += " --enable-base64 "
+    end
     if should[:count]
       command += " --count " + should[:count].to_s
     end
@@ -56,6 +63,45 @@ class Puppet::Provider::ChaosexperimentFile::ChaosexperimentFile < Puppet::Resou
     s.launchExperiment(context, should, name, command)
   end
 
+  def fileChmodExperiment(context, name, should)
+    s = Chaosexperiment.new
+
+    command = "blade create file chmod "
+    command = fileShared(context, name, should, command)
+    if should[:mark]
+      command += " --mark=\"" + should[:mark] + "\""
+    end
+    s.launchExperiment(context, should, name, command)
+  end
+
+  def fileDeleteExperiment(context, name, should)
+    s = Chaosexperiment.new
+
+    command = "blade create file delete "
+    command = fileShared(context, name, should, command)
+    if should[:force]
+      command += " --force "
+    end
+    s.launchExperiment(context, should, name, command)
+  end
+
+  def fileMoveExperiment(context, name, should)
+    s = Chaosexperiment.new
+
+    command = "blade create file move "
+    command = fileShared(context, name, should, command)
+    if should[:create_dir]
+      command += " --auto-create-dir "
+    end
+    if should[:force]
+      command += " --force "
+    end
+    if should[:target]
+      command += " --target=\"" + should[:target] + "\""
+    end
+    s.launchExperiment(context, should, name, command)
+  end
+
 
   def experiment(context, name, should)
     if should[:type] == 'file_add'
@@ -63,6 +109,15 @@ class Puppet::Provider::ChaosexperimentFile::ChaosexperimentFile < Puppet::Resou
     end
     if should[:type] == 'file_append'
       fileAppendExperiment(context, name, should)
+    end
+    if should[:type] == 'file_chmod'
+      fileChmodExperiment(context, name, should)
+    end
+    if should[:type] == 'file_delete'
+      fileDeleteExperiment(context, name, should)
+    end
+    if should[:type] == 'file_move'
+      fileMoveExperiment(context, name, should)
     end
   end
 

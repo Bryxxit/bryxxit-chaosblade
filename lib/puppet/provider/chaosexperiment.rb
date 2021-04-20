@@ -142,6 +142,9 @@ class Chaosexperiment
           if k.start_with?("--enable-base64")
             r[:enable_base64] = true
           end
+          if k.start_with?("--force")
+            r[:force] = true
+          end
           if k.start_with?("--read")
             k.sub! '--read', ''
             if r[:burn_method] == 'write'
@@ -171,7 +174,14 @@ class Chaosexperiment
             k.sub! '--escape=', ''
             r[:escape] = k
           end
-    
+          if k.start_with?("--mark=")
+            k.sub! '--mark=', ''
+            r[:mark] = k
+          end
+          if k.start_with?("--target=")
+            k.sub! '--target=', ''
+            r[:target] = k
+          end
       
         end
         r
