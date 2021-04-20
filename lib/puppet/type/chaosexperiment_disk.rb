@@ -3,11 +3,11 @@
 require 'puppet/resource_api'
 
 Puppet::ResourceApi.register_type(
-  name: 'chaosexperiment',
+  name: 'chaosexperiment_disk',
   docs: <<-EOS,
-@summary a chaosexperiment type
+@summary a chaosexperiment_disk type
 @example
-chaosexperiment { 'foo':
+chaosexperiment_disk { 'foo':
   ensure => 'present',
 }
 
@@ -27,34 +27,17 @@ EOS
     },
     name: {
       type:      'String',
-      desc:      'The uid for the attack',
+      desc:      'The uid for the experiment',
       behaviour: :namevar,
     },
     type: {
-      type:    'Enum[cpu, disk_burn, disk_fill, mem, file_add]',
-      desc:    'The type of attack you would like to trigger.',
-      default: 'cpu',
+      type:    'Enum[disk_burn, disk_fill]',
+      desc:    'The type of experiment you would like to trigger.',
+      default: 'disk_burn',
     },
     timeout: {
       type:      'Optional[Integer]',
-      desc:      'The duration of the attack',
-    },
-    ### Cpu params
-    load: {
-      type:      'Optional[Integer]',
-      desc:      'cpu load percentage in procent',
-    },
-    climb: {
-      type:      'Optional[Integer]',
-      desc:      'The climb time in seconds for the attack',
-    },
-    cpu_count: {
-      type:      'Optional[Integer]',
-      desc:      'The number of cpus to use in the attack',
-    },
-    cpu_list: {
-      type:      'Optional[String]',
-      desc:      'CPUs in which to allow burning (0-3 or 1,3)',
+      desc:      'The duration of the experiment',
     },
     ### Disk fill/burn params
     size: {
@@ -82,25 +65,5 @@ EOS
       type:      'Optional[Boolean]',
       desc:      'Wheter to keep the large file created by fill or not.',
     },
-    ### file params
-    #### File add only creates file if not exists yet
-    #### Path is resued for filepath but is required here
-    content: {
-      type:      'Optional[String]',
-      desc:      'Content to fill the file with',
-    },
-    create_dir: {
-      type:      'Optional[Boolean]',
-      desc:      'Creates directory if it does not exist',
-    },
-    enable_base64: {
-      type:      'Optional[Boolean]',
-      desc:      'Use base64 encoding',
-    },
-    directory: {
-      type:      'Optional[Boolean]',
-      desc:      'Wether the file created is a directory or not',
-    },
-
   },
 )

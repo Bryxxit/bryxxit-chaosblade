@@ -1,8 +1,8 @@
 {
-  "name": "chaosblade",
+  "name": "bryxxit-chaosblade",
   "version": "0.1.0",
   "author": "negast",
-  "summary": "",
+  "summary": "Installs chaosblade and manages chaosblade resources",
   "license": "MIT",
   "source": "",
   "dependencies": [
