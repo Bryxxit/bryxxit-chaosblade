@@ -3,11 +3,11 @@
 require 'puppet/resource_api'
 
 Puppet::ResourceApi.register_type(
-  name: 'chaosexperiment_cpu',
+  name: 'chaosexperiment_mem',
   docs: <<-EOS,
-@summary a chaosexperiment_cpu type
+@summary a chaosexperiment_mem type
 @example
-chaosexperiment_cpu { 'foo':
+chaosexperiment_mem { 'foo':
   ensure => 'present',
 }
 
@@ -25,36 +25,40 @@ EOS
       desc:    'Whether this resource should be present or absent on the target system.',
       default: 'present',
     },
-    type: {
-      type:    'Optional[String]',
-      behaviour: :read_only,
-      desc:    '',
-    },
     name: {
       type:      'String',
       desc:      'The uid for the experiment',
       behaviour: :namevar,
     },
+    type: {
+      type:    'Optional[String]',
+      behaviour: :read_only,
+      desc:    '',
+    },
     timeout: {
       type:      'Optional[Integer]',
       desc:      'The duration of the experiment',
     },
-    ### Cpu params
+    buffer: {
+      type:      'Optional[Boolean]',
+      desc:      'Ram mode mem-percent is include buffer/cache',
+    },
     load: {
       type:      'Optional[Integer]',
-      desc:      'cpu load percentage in procent',
+      desc:      'percent of burn Memory (0-100)',
     },
-    climb: {
+    burn_method: {
+      type:    'Optional[Enum[cache, ram]]',
+      desc:    'burn memory mode, cache or ram',
+      default: 'cache',
+    },
+    rate: {
       type:      'Optional[Integer]',
-      desc:      'The climb time in seconds for the experiment',
+      desc:      'burn memory rate, unit is M/S, only support for ram mode',
     },
-    cpu_count: {
+    reserve: {
       type:      'Optional[Integer]',
-      desc:      'The number of cpus to use in the experiment',
-    },
-    cpu_list: {
-      type:      'Optional[String]',
-      desc:      'CPUs in which to allow burning (0-3 or 1,3)',
+      desc:      'reserve to burn Memory, unit is MB. If the mem-percent flag exist, use mem-percent first.',
     },
   },
 )

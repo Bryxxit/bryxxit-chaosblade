@@ -30,8 +30,8 @@ class Puppet::Provider::ChaosexperimentDisk::ChaosexperimentDisk < Puppet::Resou
       ## TODO max 100%
       command += " --percent " + should[:disk_usage].to_s
     end
-    if should[:disk_reserve]
-      command += " --reserve " + should[:disk_reserve].to_s
+    if should[:reserve]
+      command += " --reserve " + should[:reserve].to_s
     end
     if should[:retain_file]
       command += " --retain-handle "

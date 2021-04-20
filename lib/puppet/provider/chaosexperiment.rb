@@ -35,6 +35,9 @@ class Chaosexperiment
         if value['Command'] == 'cpu'
           type = 'cpu'
         end
+        if value['Command'] == 'mem'
+          type = 'mem'
+        end
         if value['Command'] == 'disk'
           if value['SubCommand'] == 'burn'
             type = 'disk_burn'
@@ -115,7 +118,7 @@ class Chaosexperiment
           end
           if k.start_with?("--reserve=")
             k.sub! '--reserve=', ''
-            r[:disk_reserve] = k.to_i
+            r[:reserve] = k.to_i
           end
           if k.start_with?("--retain-handle")
             r[:retain_file] = true
@@ -181,6 +184,21 @@ class Chaosexperiment
           if k.start_with?("--target=")
             k.sub! '--target=', ''
             r[:target] = k
+          end
+          if k.start_with?("--mem-percent=")
+            k.sub! '--mem-percent=', ''
+            r[:load] = k.to_i
+          end
+          if k.start_with?("--rate=")
+            k.sub! '--rate=', ''
+            r[:rate] = k.to_i
+          end
+          if k.start_with?("--mode=")
+            k.sub! '--mode=', ''
+            r[:burn_method] = k
+          end
+          if k.start_with?("--include-buffer-cache")
+            r[:buffer] = true
           end
       
         end

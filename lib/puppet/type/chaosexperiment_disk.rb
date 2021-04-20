@@ -57,7 +57,7 @@ EOS
       type:      'Optional[Integer]',
       desc:      'Percent of disk to occupy in a disk fill experiment. If size, percent and reserve flags exist, the priority is as follows: percent > reserve > size',
     },
-    disk_reserve: {
+    reserve: {
       type:      'Optional[Integer]',
       desc:      'Number of mb reserve for the disk when doing a disk fill experiment. If size, percent and reserve flags exist, the priority is as follows: percent > reserve > size',
     },
