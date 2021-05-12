@@ -9,8 +9,8 @@ Chaos engineering can be used to test your environment for stability. Train engi
 The chaosblade executable needs to be active on the server for it to launch chaos experiments. This can be done with include chaosblade. Which will just download the exec from the github and create a symlink so it should be able to be used globally.
 
 ## Examples
-
- Creates a load of 5% on a set of your cpu's
+```
+ # Creates a load of 5% on a set of your cpu's
  chaosexperiment_cpu { 'cpuload1':
     ensure   => 'present',
     load     => 5,
@@ -19,7 +19,7 @@ The chaosblade executable needs to be active on the server for it to launch chao
     cpu_list => '1,2'
   }
 
-  Create a file for reading an writing io. Block size is 15MB
+  # Create a file for reading an writing io. Block size is 15MB
   chaosexperiment_disk { 'diskburn1':
     type        => 'disk_burn',
     size        => 15,
@@ -27,7 +27,7 @@ The chaosblade executable needs to be active on the server for it to launch chao
     timeout     => 60,
   }
 
-  Creates a file of 2048MB in /
+  # Creates a file of 2048MB in /
   chaosexperiment_disk { 'diskfil1':
     type        => 'disk_fill',
     size        => 2048,
@@ -35,7 +35,7 @@ The chaosblade executable needs to be active on the server for it to launch chao
     timeout     => 60,
   }
 
-  creates a file if not exists
+  # creates a file if not exists
   chaosexperiment_file { 'fileadd1':
     type       => 'file_add',
     path       => '/tmp/test/file.txt',
@@ -44,7 +44,7 @@ The chaosblade executable needs to be active on the server for it to launch chao
     timeout    => 120,
   }
 
-  Creates a directory if not exists
+  # Creates a directory if not exists
   chaosexperiment_file { 'fileadd2':
     type       => 'file_add',
     path       => '/tmp/test/dir',
@@ -53,7 +53,7 @@ The chaosblade executable needs to be active on the server for it to launch chao
     timeout    => 120,
   }
 
-  adds the specified content to the file. It is repeated a number of times over certain intervals.
+  # adds the specified content to the file. It is repeated a number of times over certain intervals.
   chaosexperiment_file { 'fileappend1':
     type     => 'file_append',
     path     => '/file0.txt',
@@ -63,7 +63,7 @@ The chaosblade executable needs to be active on the server for it to launch chao
     timeout  => 60,
   }
 
-  chmods a file with 777
+  # chmods a file with 777
   chaosexperiment_file { 'filechmod1':
     type    => 'file_chmod',
     mark    => '777',
@@ -71,7 +71,7 @@ The chaosblade executable needs to be active on the server for it to launch chao
     timeout => 60,
   }
 
-  Deletes a file
+  # Deletes a file
   chaosexperiment_file { 'filedelete1':
     type    => 'file_delete',
     force   => true,
@@ -79,7 +79,7 @@ The chaosblade executable needs to be active on the server for it to launch chao
     timeout => 60,
   }
 
-  move a file to a dir if not exists it creates it
+  # move a file to a dir if not exists it creates it
   chaosexperiment_file { 'filemove1':
     type       => 'file_move',
     target     => '/file4.txt',
@@ -88,13 +88,14 @@ The chaosblade executable needs to be active on the server for it to launch chao
     timeout    => 60,
   }
   
+  # creates memory load
   chaosexperiment_mem { 'memload1':
     ensure  => 'present',
     load    => 5,
     rate    => 2,
     timeout => 60,
   }
-
+  # stops a specified process
   chaosexperiment_process { 'process1':
     ensure           => 'present',
     type             => 'process_stop',
@@ -102,7 +103,7 @@ The chaosblade executable needs to be active on the server for it to launch chao
     ignore_not_found => true,
     timeout          => 60,
   }
-
+  # kills a specified process on channel 9
   chaosexperiment_process { 'process2':
     ensure           => 'present',
     type             => 'process_kill',
@@ -111,4 +112,4 @@ The chaosblade executable needs to be active on the server for it to launch chao
     signal           => 9,
     timeout          => 60,
   }
-  
+```  
