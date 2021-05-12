@@ -1,10 +1,4 @@
-# chaos
-#### Table of Contents
-
-1. [Description](#description)
-2. [Setup - The basics of getting started with chaos](#setup)
-3. [Usage - Configuration options and additional functionality](#usage)
-
+# chaosblade
 
 ## Description
 
@@ -12,21 +6,9 @@ chaosblade is a module that will activate chaos engineering with puppet.
 Chaos engineering can be used to test your environment for stability. Train engineers to solve, detect problems. In short applying chaos engineering to your environment will gain you valuable isights that can be used to improve your environment.
 
 ## Setup
+The chaosblade executable needs to be active on the server for it to launch chaos experiments. This can be done with include chaosblade. Which will just download the exec from the github and create a symlink so it should be able to be used globally.
 
-
-### What chaos affects **OPTIONAL**
-
-### Setup Requirements **OPTIONAL**
-
-
-
-### Beginning with chaos
-
-The very basic steps needed for a user to get the module up and running. This can include setup steps, if necessary, or it can be an example of the most basic use of the module.
-
-## Usage
-
-Examples
+## Examples
 
  Creates a load of 5% on a set of your cpu's
  chaosexperiment_cpu { 'cpuload1':
@@ -105,3 +87,28 @@ Examples
     path       => '/file3.txt',
     timeout    => 60,
   }
+  
+  chaosexperiment_mem { 'memload1':
+    ensure  => 'present',
+    load    => 5,
+    rate    => 2,
+    timeout => 60,
+  }
+
+  chaosexperiment_process { 'process1':
+    ensure           => 'present',
+    type             => 'process_stop',
+    process_cmd      => 'sshd',
+    ignore_not_found => true,
+    timeout          => 60,
+  }
+
+  chaosexperiment_process { 'process2':
+    ensure           => 'present',
+    type             => 'process_kill',
+    process_cmd      => 'ntp',
+    ignore_not_found => true,
+    signal           => 9,
+    timeout          => 60,
+  }
+  
