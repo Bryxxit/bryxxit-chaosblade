@@ -63,6 +63,14 @@ class Chaosexperiment
             type = 'file_move'
           end
         end
+        if value['Command'] == 'process'
+          if value['SubCommand'] == 'kill'
+            type = 'process_kill'
+          end
+          if value['SubCommand'] == 'stop'
+            type = 'process_stop'
+          end
+        end
     
         type
       end
@@ -200,7 +208,25 @@ class Chaosexperiment
           if k.start_with?("--include-buffer-cache")
             r[:buffer] = true
           end
-      
+          if k.start_with?("--process=")
+            k.sub! '--process=', ''
+            r[:process] = k
+          end
+          if k.start_with?("--process-cmd=")
+            k.sub! '--process-cmd=', ''
+            r[:process_cmd] = k
+          end
+          if k.start_with?("--local-port=")
+            k.sub! '--local-port=', ''
+            r[:local_port] = k
+          end
+          if k.start_with?("--ignore-not-found")
+            r[:ignore_not_found] = true
+          end
+          if k.start_with?("--signal=")
+            k.sub! '--signal=', ''
+            r[:signal] = k.to_i
+          end
         end
         r
       end
