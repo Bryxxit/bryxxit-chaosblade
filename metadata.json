@@ -4,7 +4,9 @@
   "author": "negast",
   "summary": "Installs chaosblade and manages chaosblade resources",
   "license": "MIT",
-  "source": "",
+  "source": "https://github.com/negast/negast-chaosblade.git",
+  "project_page": "https://github.com/negast/negast-chaosblade.git",
+  "issues_url": "https://github.com/Bryxxit/bryxxit-chaosblade/issues",
   "dependencies": [
 
   ],
