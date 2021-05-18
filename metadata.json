@@ -1,6 +1,6 @@
 {
   "name": "negast-chaosblade",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "negast",
   "summary": "Installs chaosblade and manages chaosblade resources",
   "license": "MIT",
