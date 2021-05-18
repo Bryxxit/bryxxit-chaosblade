@@ -52,15 +52,15 @@ EOS
       desc:      'Exclude local ports. Support for configuring multiple ports, separated by commas or connector representing ranges, for example: 22,8000. This flag is invalid when --local-port or --remote-port is specified',
     },
     force: {
-      type:      'Optional[Bolean]',
+      type:      'Optional[Boolean]',
       desc:      'Forcibly overwrites the original rules',
     },
     ignore_peer_port: {
-      type:      'Optional[Bolean]',
+      type:      'Optional[Boolean]',
       desc:      'ignore excluding all ports communicating with this port, generally used when the ss command does not exist',
     },
     interface: {
-      type:      'Optional[Bolean]',
+      type:      'Optional[String]',
       desc:      'Network interface, for example, eth0 (required)',
     },
     local_port: {
@@ -75,20 +75,16 @@ EOS
       type:      'Optional[String]',
       desc:      'Ports for remote service. Support for configuring multiple ports, separated by commas or connector representing ranges, for example: 80,8000-8080',
     },
-    delay: {
-      type:      'Optional[Integer]',
-      desc:      'Delay offset time, ms',
-    },
     ip: {
-      type:      'Optional[Integer]',
+      type:      'Optional[String]',
       desc:      'Domain ip (required for dns)',
     },
     domain: {
-      type:      'Optional[Integer]',
+      type:      'Optional[String]',
       desc:      'Domain name (required for dns)',
     },
     network_traffic: {
-      type:    'Optional[Enum[out, in]]',
+      type:    'Optional[String]',
       desc:    'The direction of network traffic eg. --network-traffic out',
       default: 'present',
     },
@@ -104,17 +100,33 @@ EOS
       type:      'Optional[Integer]',
       desc:      'The source port of packet',
     },
+    string_pattern: {
+      type:      'Optional[Integer]',
+      desc:      'The string that is contained in the packet',
+    },
     port: {
       type:      'Optional[Integer]',
       desc:      'The port occupied (required for occupy)',
     },
     force: {
-      type:      'Optional[Bolean]',
+      type:      'Optional[Boolean]',
       desc:      'Force kill the process which is using the port',
     },
     time: {
       type:      'Optional[Integer]',
       desc:      'Delay time, must be positive integer, unit is millisecond, default value is 10',
+    },
+    correlation: {
+      type:      'Optional[Integer]',
+      desc:      'Correlation on previous packet, value is between 0 and 100 (required)',
+    },
+    gap: {
+      type:      'Optional[Integer]',
+      desc:      'Packet gap, must be positive integer',
+    },
+    offset: {
+      type:      'Optional[Integer]',
+      desc:      'Delay offset time, ms',
     },
   },
 )

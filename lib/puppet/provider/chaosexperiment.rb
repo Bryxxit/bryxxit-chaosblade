@@ -71,6 +71,32 @@ class Chaosexperiment
             type = 'process_stop'
           end
         end
+        if value['Command'] == 'network'
+          if value['SubCommand'] == 'corrupt'
+            type = 'network_corrupt'
+          end
+          if value['SubCommand'] == 'delay'
+            type = 'network_delay'
+          end
+          if value['SubCommand'] == 'dns'
+            type = 'network_dns'
+          end
+          if value['SubCommand'] == 'drop'
+            type = 'network_drop'
+          end
+          if value['SubCommand'] == 'duplicate'
+            type = 'network_duplicate'
+          end
+          if value['SubCommand'] == 'loss'
+            type = 'network_loss'
+          end
+          if value['SubCommand'] == 'occupy'
+            type = 'network_occupy'
+          end
+          if value['SubCommand'] == 'reorder'
+            type = 'network_reorder'
+          end
+        end
     
         type
       end
@@ -122,7 +148,7 @@ class Chaosexperiment
           end
           if k.start_with?("--percent=")
             k.sub! '--percent=', ''
-            r[:disk_usage] = k.to_i
+            r[:usage] = k.to_i
           end
           if k.start_with?("--reserve=")
             k.sub! '--reserve=', ''
@@ -226,6 +252,82 @@ class Chaosexperiment
           if k.start_with?("--signal=")
             k.sub! '--signal=', ''
             r[:signal] = k.to_i
+          end
+
+          if k.start_with?("--destination-port=")
+            k.sub! '--destination-port=', ''
+            r[:destination_port] = k
+          end
+          if k.start_with?("--destination-ip=")
+            k.sub! '--destination-ip=', ''
+            r[:destination_ip] = k
+          end
+          if k.start_with?("--exclude-ip=")
+            k.sub! '--exclude-ip=', ''
+            r[:exclude_ip] = k
+          end
+          if k.start_with?("--exclude-port=")
+            k.sub! '--exclude-port=', ''
+            r[:exclude_port] = k
+          end
+          if k.start_with?("--ignore-peer-port")
+            r[:ignore_peer_port] = true
+          end
+          if k.start_with?("--interface=")
+            k.sub! '--interface=', ''
+            r[:interface] = k
+          end
+          if k.start_with?("--remote-port=")
+            k.sub! '--remote-port=', ''
+            r[:remote_port] = k
+          end
+          if k.start_with?("--ip=")
+            k.sub! '--ip=', ''
+            r[:ip] = k
+          end
+          if k.start_with?("--domain=")
+            k.sub! '--domain=', ''
+            r[:domain] = k
+          end
+          if k.start_with?("-network-traffic=")
+            k.sub! '-network-traffic=', ''
+            r[:network_traffic] = k
+          end
+          if k.start_with?("--delay=")
+            k.sub! '--delay=', ''
+            r[:delay] = k.to_i
+          end
+          if k.start_with?("--source-port=")
+            k.sub! '--source-port=', ''
+            r[:source_port] = k
+          end
+          if k.start_with?("--source-ip=")
+            k.sub! '--source-ip=', ''
+            r[:source_ip] = k
+          end
+          if k.start_with?("--string-pattern=")
+            k.sub! '--string-pattern=', ''
+            r[:string_pattern] = k
+          end
+          if k.start_with?("--port=")
+            k.sub! '--port=', ''
+            r[:port] = k.to_i
+          end
+          if k.start_with?("--time=")
+            k.sub! '--time=', ''
+            r[:time] = k.to_i
+          end
+          if k.start_with?("--correlation=")
+            k.sub! '--correlation=', ''
+            r[:correlation] = k.to_i
+          end
+          if k.start_with?("--gap=")
+            k.sub! '--gap=', ''
+            r[:gap] = k.to_i
+          end
+          if k.start_with?("--offset=")
+            k.sub! '--offset=', ''
+            r[:offset] = k.to_i
           end
         end
         r
