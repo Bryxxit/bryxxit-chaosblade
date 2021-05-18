@@ -113,4 +113,23 @@ The chaosblade executable needs to be active on the server for it to launch chao
     signal           => 9,
     timeout          => 60,
   }
+  chaosexperiment_network { 'nw1':
+    ensure         => 'present',
+    type           => 'network_corrupt',
+    interface      => 'eth0',
+    destination_ip => '180.101.49.12',
+    percent        => 15,
+    timeout        => 60,
+  }
+
+  chaosexperiment_network { 'nw2':
+    ensure         => 'present',
+    type           => 'network_delay',
+    interface      => 'eth0',
+    destination_ip => '180.101.49.12',
+    local_port     => '8080,8081',
+    time           => 600,
+    offset         => 60,
+    timeout        => 700,
+  }
 ```  
