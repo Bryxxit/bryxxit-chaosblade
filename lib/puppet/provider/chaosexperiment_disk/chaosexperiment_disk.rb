@@ -26,9 +26,9 @@ class Puppet::Provider::ChaosexperimentDisk::ChaosexperimentDisk < Puppet::Resou
 
     command = "blade create disk fill "
     command = diskShared(context, name, should, command)
-    if should[:disk_usage]
+    if should[:percent]
       ## TODO max 100%
-      command += " --percent " + should[:disk_usage].to_s
+      command += " --percent " + should[:percent].to_s
     end
     if should[:reserve]
       command += " --reserve " + should[:reserve].to_s
