@@ -24,7 +24,7 @@ class Chaosexperiment
           arr2.append(d)
           end
         end
-        puts arr2
+        # puts arr2
         arr2
     end
 
@@ -69,6 +69,14 @@ class Chaosexperiment
           end
           if value['SubCommand'] == 'stop'
             type = 'process_stop'
+          end
+        end
+        if value['Command'] == 'strace'
+          if value['SubCommand'] == 'delay'
+            type = 'strace_delay'
+          end
+          if value['SubCommand'] == 'error'
+            type = 'strace_error'
           end
         end
         if value['Command'] == 'network'
@@ -253,6 +261,35 @@ class Chaosexperiment
             k.sub! '--signal=', ''
             r[:signal] = k.to_i
           end
+          
+          if k.start_with?("--end=")
+            k.sub! '--end=', ''
+            r[:end] = k
+          end
+          if k.start_with?("--first=")
+            k.sub! '--first=', ''
+            r[:first] = k
+          end
+          if k.start_with?("--pid=")
+            k.sub! '--pid=', ''
+            r[:pid] = k.to_i
+          end
+          if k.start_with?("--step=")
+            k.sub! '--step=', ''
+            r[:step] = k
+          end
+          if k.start_with?("--syscall-name=")
+            k.sub! '--syscall-name=', ''
+            r[:syscall_name] = k
+          end
+          if k.start_with?("--return-value=")
+            k.sub! '--return-value=', ''
+            r[:return_value] = k
+          end
+          if k.start_with?("--delay-loc=")
+            k.sub! '--delay-loc=', ''
+            r[:delay_loc] = k
+          end
 
           if k.start_with?("--destination-port=")
             k.sub! '--destination-port=', ''
@@ -314,8 +351,13 @@ class Chaosexperiment
             r[:port] = k.to_i
           end
           if k.start_with?("--time=")
-            k.sub! '--time=', ''
-            r[:time] = k.to_i
+            if getAttackType(value) == 'strace_delay'
+              k.sub! '--time=', ''
+              r[:time] = k
+            else
+              k.sub! '--time=', ''
+              r[:time] = k.to_i
+            end
           end
           if k.start_with?("--correlation=")
             k.sub! '--correlation=', ''
