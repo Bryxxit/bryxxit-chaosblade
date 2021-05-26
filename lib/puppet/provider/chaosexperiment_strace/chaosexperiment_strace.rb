@@ -37,7 +37,7 @@ class Puppet::Provider::ChaosexperimentStrace::ChaosexperimentStrace < Puppet::R
     command = "blade create strace delay "
     command = straceShared(context, name, should, command)
     if should[:time]
-      command += " --time=" + should[:time] + "\""
+      command += " --time=\"" + should[:time] + "\""
     end
     if should[:delay_loc]
       command += " --delay-loc=\"" + should[:delay_loc] + "\""

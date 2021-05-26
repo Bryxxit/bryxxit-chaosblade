@@ -24,7 +24,7 @@ class Chaosexperiment
           arr2.append(d)
           end
         end
-        puts arr2
+        # puts arr2
         arr2
     end
 
@@ -69,6 +69,14 @@ class Chaosexperiment
           end
           if value['SubCommand'] == 'stop'
             type = 'process_stop'
+          end
+        end
+        if value['Command'] == 'strace'
+          if value['SubCommand'] == 'delay'
+            type = 'strace_delay'
+          end
+          if value['SubCommand'] == 'error'
+            type = 'strace_error'
           end
         end
         if value['Command'] == 'network'
@@ -264,7 +272,7 @@ class Chaosexperiment
           end
           if k.start_with?("--pid=")
             k.sub! '--pid=', ''
-            r[:pid] = k
+            r[:pid] = k.to_i
           end
           if k.start_with?("--step=")
             k.sub! '--step=', ''
@@ -343,7 +351,7 @@ class Chaosexperiment
             r[:port] = k.to_i
           end
           if k.start_with?("--time=")
-            if r['type'] == 'strace_delay'
+            if getAttackType(value) == 'strace_delay'
               k.sub! '--time=', ''
               r[:time] = k
             else
